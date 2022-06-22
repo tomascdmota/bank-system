@@ -48,7 +48,52 @@ public class Bank {
 	  
 	  void menu() {
 		  char option;
+		  Account acc = new Account();
 		  Scanner sc = new Scanner(System.in);
-		  System.out.println("Please, choose an option: \n")
+		  String customerName = acc.getName();
+		  String customerNo = acc.getAccountNo();
+		  double amount = 0;
+		  System.out.println("Welcome " + customerName);
+		  System.out.println("Your ID:" + customerNo);
+		  
+		  
+		  do {
+		  System.out.println("Please, choose an option: \n");
+		  option = sc.next().charAt(0);
+		  System.out.println("\n");
+		  
+		  switch(option) {
+		  
+		  case 'a':
+			  System.out.println("Your account balance is: \n " + acc.getBalance());
+			  break;
+			  
+		  case 'b':
+			  System.out.println("Enter the amount to be deposited: " + amount);
+			  amount = sc.nextDouble();
+			  acc.deposit(amount);
+			  System.out.println("Your account balance is: \n " + acc.getBalance());
+			  break;
+		  
+		  case 'c':
+			  System.out.println("Enter the amount to be withdrawan" + amount);
+			  amount = sc.nextDouble();
+			  acc.withdraw(amount);
+			  break;
+			  
+			  
+			  default:
+				  System.out.println("Please choose a correct option.");
+					break;
+		  }
+		  
+		  
+	  } while (option!='e');
+		  System.out.println("thank you for your preference");
+		  
+	  
+	  
 	  }
 }
+
+
