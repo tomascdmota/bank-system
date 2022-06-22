@@ -1,0 +1,139 @@
+import java.util.Scanner;
+
+
+public class Main {
+
+	
+	public static void main(String[] args) {
+		// Gets user input
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter your 'Name' and 'CustomerId' to access your Bank account: ");
+		// the nextLine function is part of the sc package and acts as a form of storing the user input
+		System.out.println("Name: ");
+		String name = sc.nextLine().toUpperCase();
+		System.out.println("Customer ID: ");
+		String customerId = sc.nextLine().toUpperCase();
+		// BankAccount here is the class we created down bellow that is responsible for storing the user info and takes 2 arguments
+		BankAccount ba = new BankAccount(name, customerId);
+		
+		// Here we are calling the menu function declared at last on the "ba" which is the bank account with the details we have just input.
+		ba.menu();
+		
+		Account ca = new Account();
+	}
+}
+
+class BankAccount{
+	double balance;
+	double prevTrans;
+	String customerName;
+	String customerId;
+	
+	// This constructor here is made to assign the two string objects on like 14 to their values in the bankAccount
+	BankAccount(String customerName, String customerId){
+		this.customerName = customerName;
+		this.customerId = customerId;
+	}
+	
+	// Here I defined a few functions to perform ATM actions. They are all void because we don't need to return anything, just to perform the operations
+	
+	void deposit(double amount) {
+		if(amount != 0) {
+			// Here we update the balance by adding the amount the user has deposited;
+			balance += amount;
+			// Here we are setting the previous transfer to the new amount that has been added, sort of a balance sheet on our banking app.
+			prevTrans = amount;
+		}
+	}
+	
+	void withdraw(double amount) {
+		// Condition to check if we have enough balance to perform the withdraw and error-handle for a 0 value
+		if(amount != 0 && balance >= amount) {
+			// Subtracted the amount of withdrawal to the current balance and updated the last transference.
+			balance -= amount;
+			prevTrans = amount;
+		} else if(balance < amount) {
+			// Logging an error to the user warning to a failed operation;
+			System.out.println("Operation failed due to insuficient funds");
+		}
+	}
+	
+	void getPreviousTrans() {
+		// Used simple conditions to check what kind of operation was performed.
+		if(prevTrans > 0) {
+			System.out.println("Deposited:" +prevTrans);
+		} 
+		else if(prevTrans < 0) {
+			System.out.println("Withdrawn:" + Math.abs(prevTrans));
+		}
+		else {
+			System.out.println("Not operation has been performed");
+		}
+	}
+	
+	void menu() {
+		char option;
+		// Telling the JVM we are expecting user input
+		Scanner sc = new Scanner(System.in);
+		System.out.println("welcome " + customerName);
+		System.out.println("Your id: " + customerId);
+		System.out.println("\n (a) Check Balance\n (b) Deposit Amount\n (c) Withdraw Amount\n (d) Previous Transaction\n (e) Exit\n");
+		
+		
+		do {
+			System.out.println("*****************************************");
+			System.out.println("Choose and option: \n");
+			// The charAt(0) here serves to only accept the first character inputed by the user, in this case a letter from a-e is expected;
+			option = sc.next().charAt(0);
+			System.out.println("\n");
+			
+			 // Here we did a switch/case operation to give the user an output based on their input captured at line 80; In the end we also 
+			// took care of a miss-click, like something other than a-e;
+			switch(option) {
+				case 'a':
+					System.out.println("Balance = " + balance);
+					break;
+					
+				case 'b':
+					System.out.println("Enter the amount to be deposited: ");
+					double amount = sc.nextDouble();
+					deposit(amount);
+					System.out.printf("You have deposited " + amount + " euros\n");
+					break;
+					
+				case 'c':
+					System.out.println("Enter the amount to be withdrawan: ");
+					double amountW = sc.nextDouble();
+					withdraw(amountW);
+					System.out.println("You have withdrawan " + amountW + " euros \n\n" + "You current balance is: " + balance);
+					break;
+				
+				case 'd':
+					System.out.println("Previous Transaction: \n\n");
+					getPreviousTrans();
+					break;
+					
+				case 'e': 
+					System.out.println("\n........\n");
+					break;
+					
+				case 'f':
+					
+					System.out.println("Creating new account... \n\n\n");
+					Account ca = new Account();
+					break;
+					
+				default:
+					System.out.println("Please, choose a correct option to proceed");
+					break;
+			}
+			
+		} while(option != 'e');
+		System.out.println("Thank you for your preference");
+	}
+}
+
+
+
+
+
